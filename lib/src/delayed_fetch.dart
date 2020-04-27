@@ -17,10 +17,6 @@ mixin DelayedFetchMixin<T, E extends StatefulWidget> on State<E> {
       final _end = DateTime.now().millisecondsSinceEpoch;
       final td = ModalRoute.of(context).transitionDuration.inMilliseconds + 200;
 
-      print(td);
-      print(_end - _start);
-      print(td - (_end - _start));
-
       if (_end - _start >= td) {
         this.onSuccess(res);
       } else {

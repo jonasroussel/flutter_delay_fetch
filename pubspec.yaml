@@ -1,6 +1,6 @@
 name: flutter_delay_fetch
 description: A flutter plugin to put a delay between fetch request and parsing data with a mixin, during page route navigation to avoid laggy animations.
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/jonasroussel/flutter_delay_fetch
 homepage: https://github.com/jonasroussel/flutter_delay_fetch#readme
 
