@@ -1,22 +1,43 @@
-A library for Dart developers.
+# Flutter Delay Fetch
+[![pub package](https://img.shields.io/pub/v/flutter_delay_fetch.svg)](https://pub.dev/packages/flutter_delay_fetch)
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+A flutter plugin to put a delay between fetch request and parsing data with a mixin,
+during page route navigation to avoid laggy animations.
 
 ## Usage
 
-A simple usage example:
-
+### Import
 ```dart
 import 'package:flutter_delay_fetch/flutter_delay_fetch.dart';
-
-main() {
-  var awesome = new Awesome();
-}
 ```
 
-## Features and bugs
+### Basic Page
 
-Please file feature requests and bugs at the [issue tracker][tracker].
+```dart
+class FetchPage extends StatefulWidget {
+  @override
+  _FetchPageState createState() => _FetchPageState();
+}
 
-[tracker]: http://example.com/issues/replaceme
+class _FetchPageState extends State<FetchPage> with DelayedFetchMixin<Response, FetchPage> {
+  bool _loading = true;
+  List<TodoModel> _todos;
+
+  @override
+  Future<Response> fetch() async => await Dio().get('https://jsonplaceholder.typicode.com/posts');
+
+  @override
+  void onSuccess(Response response) {
+    setState(() {
+      _todos = (response.data as List).map((data) => TodoModel.fromJson(data)).toList();
+      _loading = false;
+    });
+  }
+
+  @override
+  void onError(error) { ... }
+
+  @override
+  Widget build(BuildContext context) { ... }
+}
+```
