@@ -1,35 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
-mixin DelayedFetchMixin<T, E extends StatefulWidget> on State<E> {
-  int _start;
-
-  Future<T> fetch();
-  void onSuccess(T response);
-  void onError(dynamic error);
-
-  @override
-  void initState() {
-    super.initState();
-
-    _start = DateTime.now().millisecondsSinceEpoch;
-
-    this.fetch().then((res) {
-      final _end = DateTime.now().millisecondsSinceEpoch;
-      final td = ModalRoute.of(context).transitionDuration.inMilliseconds + 200;
-
-      print(td);
-      print(_end - _start);
-      print(td - (_end - _start));
-
-      if (_end - _start >= td) {
-        this.onSuccess(res);
-      } else {
-        Future.delayed(Duration(microseconds: td - (_end - _start))).then((_) => this.onSuccess(res));
-      }
-    }).catchError((error) => this.onError(error));
-  }
-}
+import 'package:flutter_delay_fetch/flutter_delay_fetch.dart';
 
 void main() => runApp(App());
 
@@ -72,6 +43,9 @@ class FetchPage extends StatefulWidget {
 class _FetchPageState extends State<FetchPage> with DelayedFetchMixin<Response, FetchPage> {
   bool _loading = true;
   List<TodoModel> _todos;
+
+  @override
+  int get extraTime => 400; // in milliseconds
 
   @override
   Future<Response> fetch() async => await Dio().get('https://jsonplaceholder.typicode.com/posts');

@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   dio:
+  flutter_delay_fetch:
 
 flutter:
   uses-material-design: true
